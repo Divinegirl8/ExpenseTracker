@@ -1,14 +1,14 @@
-package org.expense.tracker.data.models;
+package org.expense.tracker.dtos.request;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+import org.expense.tracker.data.models.Category;
+import org.expense.tracker.data.models.Date;
+import org.expense.tracker.data.models.IncomeCategory;
 
 import java.math.BigDecimal;
 
 @Data
-public class Expense {
-    @Id
-    private String expenseId;
+public class ExpenseRequest {
     private String userId;
     private Date date;
     private Category category;

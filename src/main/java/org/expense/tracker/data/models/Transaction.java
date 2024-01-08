@@ -6,12 +6,10 @@ import org.springframework.data.annotation.Id;
 import java.math.BigDecimal;
 
 @Data
-public class User {
+public class Transaction {
     @Id
     private String userId;
-    private String username;
-    private String password;
-    private boolean login;
-    private String incomeId;
-    private String expenseId;
+    private Date date;
+    private BigDecimal amount;
+    private String description;
 }
