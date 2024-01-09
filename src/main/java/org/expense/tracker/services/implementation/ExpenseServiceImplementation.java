@@ -1,9 +1,6 @@
 package org.expense.tracker.services.implementation;
 
-import org.expense.tracker.data.models.Category;
-import org.expense.tracker.data.models.Date;
-import org.expense.tracker.data.models.Expense;
-import org.expense.tracker.data.models.User;
+import org.expense.tracker.data.models.*;
 import org.expense.tracker.data.repository.ExpenseRepository;
 import org.expense.tracker.data.repository.UserRepository;
 import org.expense.tracker.exceptions.ExpenseDetailsInvalid;
@@ -77,6 +74,13 @@ public class ExpenseServiceImplementation implements ExpenseService {
         }
 
         return total;
+    }
+
+    @Override
+    public Expense findExpense(String expenseId, String userId) {
+        Expense expense = expenseRepository.findExpenseByExpenseIdAndUserId(expenseId,userId);
+        if (expense == null) throw new ExpenseNotFound("Expense not found");
+        return expense;
     }
 
 

@@ -81,4 +81,11 @@ public class IncomeServiceImplementation implements IncomeService {
         }
         return total;
     }
+
+    @Override
+    public Income findIncome(String incomeId, String userId) {
+        Income income = incomeRepository.findIncomeByIncomeIdAndUserId(incomeId,userId);
+        if (income == null) throw new IncomeNotFound("Income not found");
+        return income;
+    }
 }

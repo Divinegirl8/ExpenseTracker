@@ -5,6 +5,7 @@ import org.expense.tracker.data.models.Income;
 import org.expense.tracker.data.models.User;
 import org.expense.tracker.data.repository.UserRepository;
 import org.expense.tracker.dtos.request.*;
+import org.expense.tracker.exceptions.IncomeAmountIsLess;
 import org.expense.tracker.exceptions.InvalidCredentialsException;
 import org.expense.tracker.exceptions.UserExistException;
 import org.expense.tracker.exceptions.UserNotFoundException;
@@ -15,6 +16,7 @@ import org.expense.tracker.services.SpendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.expense.tracker.utils.Mappers.map;
@@ -84,9 +86,66 @@ public class SpendServiceImplementation implements SpendService {
     }
 
     @Override
-    public List<Income> incomeHistory(String userId) {
+    public BigDecimal totalIncome(String userId) {
+        return incomeService.addIncomeAmount(userId);
+    }
+
+    @Override
+    public BigDecimal totalExpense(String userId) {
+        return expenseService.addExpenseAmount(userId);
+    }
+
+    @Override
+    public BigDecimal balance(String userId) {
+        BigDecimal incomeAmount = incomeService.addIncomeAmount(userId);
+        BigDecimal expenseAmount = expenseService.addExpenseAmount(userId);
+
+        if (incomeAmount.compareTo(expenseAmount) < 0) {
+            throw new IncomeAmountIsLess("Expense amount is greater than income amount");
+        }
+        return incomeAmount.subtract(expenseAmount);
+    }
+
+    @Override
+    public void removeIncome(String incomeId, String userId) {
+     incomeService.removeIncome(incomeId,userId);
+    }
+
+    @Override
+    public void removeExpense(String expenseId, String userId) {
+      expenseService.removeExpense(expenseId,userId);
+    }
+
+    @Override
+    public Income findIncome(String incomeId, String userId) {
+        return incomeService.findIncome(incomeId,userId);
+    }
+
+    @Override
+    public Expense findExpense(String expenseId, String userId) {
+        return expenseService.findExpense(expenseId,userId);
+    }
+
+    @Override
+    public List<Expense> viewExpense(String userId) {
+        return expenseService.viewExpense(userId);
+    }
+
+    @Override
+    public List<Income> viewIncome(String userId) {
         return incomeService.viewIncome(userId);
     }
+
+    @Override
+    public void removeAllExpense(String userId) {
+        expenseService.removeAllExpense(userId);
+    }
+
+    @Override
+    public void removeAllIncome(String userId) {
+        incomeService.removeAllIncome(userId);
+    }
+
 
     private boolean userExist(String username){
         User user = userRepository.findUserByUsername(username);

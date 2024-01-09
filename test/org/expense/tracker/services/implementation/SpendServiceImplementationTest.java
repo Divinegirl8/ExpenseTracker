@@ -8,8 +8,7 @@ import org.expense.tracker.data.repository.ExpenseRepository;
 import org.expense.tracker.data.repository.IncomeRepository;
 import org.expense.tracker.data.repository.UserRepository;
 import org.expense.tracker.dtos.request.*;
-import org.expense.tracker.exceptions.InvalidCredentialsException;
-import org.expense.tracker.exceptions.UserExistException;
+import org.expense.tracker.exceptions.*;
 import org.expense.tracker.services.SpendService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -229,6 +228,308 @@ class SpendServiceImplementationTest {
 
         assertNotNull(spendService.transaction("UID1"));
     }
+
+    @Test void register_User_Login_And_AddIncome_AddExpense_Get_Total_Income_Amount(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("username");
+        registerRequest.setPassword("password");
+        spendService.register(registerRequest);
+        assertFalse(spendService.findAccountBelongingTo("username").isLogin());
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("username");
+        loginRequest.setPassword("password");
+        spendService.login(loginRequest);
+        assertTrue(spendService.findAccountBelongingTo("username").isLogin());
+
+        IncomeRequest incomeRequest = new IncomeRequest();
+        incomeRequest.setUserId("UID1");
+        incomeRequest.setCategory(IncomeCategory.SALARY);
+        incomeRequest.setAmount(BigDecimal.valueOf(1000));
+        incomeRequest.setDescription("salary");
+
+        Date date = new Date();
+        date.setDay("10");
+        date.setMonth("05");
+        date.setYear("2021");
+        incomeRequest.setDate(date);
+
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+
+        ExpenseRequest expenseRequest = new ExpenseRequest();
+        expenseRequest.setUserId("UID1");
+        expenseRequest.setCategory(Category.CLOTHES);
+        expenseRequest.setAmount(BigDecimal.valueOf(2000));
+        expenseRequest.setDescription("Clothes");
+        expenseRequest.setDate(date);
+        spendService.addExpense(expenseRequest);
+
+
+        assertNotNull(spendService.transaction("UID1"));
+        assertEquals(BigDecimal.valueOf(4000),spendService.totalIncome("UID1"));
+    }
+
+    @Test void register_User_Login_And_AddIncome_AddExpense_Get_Total_Expense_Amount(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("username");
+        registerRequest.setPassword("password");
+        spendService.register(registerRequest);
+        assertFalse(spendService.findAccountBelongingTo("username").isLogin());
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("username");
+        loginRequest.setPassword("password");
+        spendService.login(loginRequest);
+        assertTrue(spendService.findAccountBelongingTo("username").isLogin());
+
+        IncomeRequest incomeRequest = new IncomeRequest();
+        incomeRequest.setUserId("UID1");
+        incomeRequest.setCategory(IncomeCategory.SALARY);
+        incomeRequest.setAmount(BigDecimal.valueOf(1000));
+        incomeRequest.setDescription("salary");
+
+        Date date = new Date();
+        date.setDay("10");
+        date.setMonth("05");
+        date.setYear("2021");
+        incomeRequest.setDate(date);
+
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+
+        ExpenseRequest expenseRequest = new ExpenseRequest();
+        expenseRequest.setUserId("UID1");
+        expenseRequest.setCategory(Category.CLOTHES);
+        expenseRequest.setAmount(BigDecimal.valueOf(2000));
+        expenseRequest.setDescription("Clothes");
+        expenseRequest.setDate(date);
+        spendService.addExpense(expenseRequest);
+
+
+        assertNotNull(spendService.transaction("UID1"));
+        assertEquals(BigDecimal.valueOf(2000),spendService.totalExpense("UID1"));
+    }
+
+    @Test void register_User_Login_And_AddIncome_AddExpense_Get_Total_Balance(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("username");
+        registerRequest.setPassword("password");
+        spendService.register(registerRequest);
+        assertFalse(spendService.findAccountBelongingTo("username").isLogin());
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("username");
+        loginRequest.setPassword("password");
+        spendService.login(loginRequest);
+        assertTrue(spendService.findAccountBelongingTo("username").isLogin());
+
+        IncomeRequest incomeRequest = new IncomeRequest();
+        incomeRequest.setUserId("UID1");
+        incomeRequest.setCategory(IncomeCategory.SALARY);
+        incomeRequest.setAmount(BigDecimal.valueOf(1000));
+        incomeRequest.setDescription("salary");
+
+        Date date = new Date();
+        date.setDay("10");
+        date.setMonth("05");
+        date.setYear("2021");
+        incomeRequest.setDate(date);
+
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        assertEquals(BigDecimal.valueOf(4000),spendService.totalIncome("UID1"));
+
+        ExpenseRequest expenseRequest = new ExpenseRequest();
+        expenseRequest.setUserId("UID1");
+        expenseRequest.setCategory(Category.CLOTHES);
+        expenseRequest.setAmount(BigDecimal.valueOf(2000));
+        expenseRequest.setDescription("Clothes");
+        expenseRequest.setDate(date);
+        spendService.addExpense(expenseRequest);
+
+
+        assertNotNull(spendService.transaction("UID1"));
+        assertEquals(BigDecimal.valueOf(2000),spendService.totalExpense("UID1"));
+        assertEquals(BigDecimal.valueOf(2000),spendService.balance("UID1"));
+    }
+
+
+    @Test void register_User_Login_And_AddIncome_AddExpense_Get_Total_Balance_Two(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("username");
+        registerRequest.setPassword("password");
+        spendService.register(registerRequest);
+        assertFalse(spendService.findAccountBelongingTo("username").isLogin());
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("username");
+        loginRequest.setPassword("password");
+        spendService.login(loginRequest);
+        assertTrue(spendService.findAccountBelongingTo("username").isLogin());
+
+        IncomeRequest incomeRequest = new IncomeRequest();
+        incomeRequest.setUserId("UID1");
+        incomeRequest.setCategory(IncomeCategory.SALARY);
+        incomeRequest.setAmount(BigDecimal.valueOf(1000));
+        incomeRequest.setDescription("salary");
+
+        Date date = new Date();
+        date.setDay("10");
+        date.setMonth("05");
+        date.setYear("2021");
+        incomeRequest.setDate(date);
+
+        spendService.addIncome(incomeRequest);
+        assertEquals(BigDecimal.valueOf(1000),spendService.totalIncome("UID1"));
+
+        ExpenseRequest expenseRequest = new ExpenseRequest();
+        expenseRequest.setUserId("UID1");
+        expenseRequest.setCategory(Category.CLOTHES);
+        expenseRequest.setAmount(BigDecimal.valueOf(500));
+        expenseRequest.setDescription("Clothes");
+        expenseRequest.setDate(date);
+        spendService.addExpense(expenseRequest);
+        spendService.addExpense(expenseRequest);
+
+
+        assertNotNull(spendService.transaction("UID1"));
+        assertEquals(BigDecimal.valueOf(1000),spendService.totalExpense("UID1"));
+        assertEquals(BigDecimal.valueOf(0),spendService.balance("UID1"));
+    }
+
+    @Test void register_User_Login_And_AddIncome_AddExpense_If_Expense_Amount_Is_Greater_Throws_Error(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("username");
+        registerRequest.setPassword("password");
+        spendService.register(registerRequest);
+        assertFalse(spendService.findAccountBelongingTo("username").isLogin());
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("username");
+        loginRequest.setPassword("password");
+        spendService.login(loginRequest);
+        assertTrue(spendService.findAccountBelongingTo("username").isLogin());
+
+        IncomeRequest incomeRequest = new IncomeRequest();
+        incomeRequest.setUserId("UID1");
+        incomeRequest.setCategory(IncomeCategory.SALARY);
+        incomeRequest.setAmount(BigDecimal.valueOf(1000));
+        incomeRequest.setDescription("salary");
+
+        Date date = new Date();
+        date.setDay("10");
+        date.setMonth("05");
+        date.setYear("2021");
+        incomeRequest.setDate(date);
+
+        spendService.addIncome(incomeRequest);
+        assertEquals(BigDecimal.valueOf(1000),spendService.totalIncome("UID1"));
+
+        ExpenseRequest expenseRequest = new ExpenseRequest();
+        expenseRequest.setUserId("UID1");
+        expenseRequest.setCategory(Category.CLOTHES);
+        expenseRequest.setAmount(BigDecimal.valueOf(500));
+        expenseRequest.setDescription("Clothes");
+        expenseRequest.setDate(date);
+        spendService.addExpense(expenseRequest);
+        spendService.addExpense(expenseRequest);
+        spendService.addExpense(expenseRequest);
+
+
+        assertNotNull(spendService.transaction("UID1"));
+        assertEquals(BigDecimal.valueOf(1500),spendService.totalExpense("UID1"));
+        assertThrows(IncomeAmountIsLess.class,()->spendService.balance("UID1"));
+    }
+
+
+    @Test void register_User_Login_And_AddIncome_AddExpense_Remove_Income(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("username");
+        registerRequest.setPassword("password");
+        spendService.register(registerRequest);
+        assertFalse(spendService.findAccountBelongingTo("username").isLogin());
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("username");
+        loginRequest.setPassword("password");
+        spendService.login(loginRequest);
+        assertTrue(spendService.findAccountBelongingTo("username").isLogin());
+
+        IncomeRequest incomeRequest = new IncomeRequest();
+        incomeRequest.setUserId("UID1");
+        incomeRequest.setCategory(IncomeCategory.SALARY);
+        incomeRequest.setAmount(BigDecimal.valueOf(1000));
+        incomeRequest.setDescription("salary");
+
+        Date date = new Date();
+        date.setDay("10");
+        date.setMonth("05");
+        date.setYear("2021");
+        incomeRequest.setDate(date);
+
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        assertEquals(BigDecimal.valueOf(2000),spendService.totalIncome("UID1"));
+
+        spendService.removeIncome("IID1","UID1");
+        assertThrows(IncomeNotFound.class,()-> spendService.findIncome("IID1","UID1"));
+
+
+
+    }
+    @Test void register_User_Login_And_AddIncome_AddExpense_Remove_Expense(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("username");
+        registerRequest.setPassword("password");
+        spendService.register(registerRequest);
+        assertFalse(spendService.findAccountBelongingTo("username").isLogin());
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("username");
+        loginRequest.setPassword("password");
+        spendService.login(loginRequest);
+        assertTrue(spendService.findAccountBelongingTo("username").isLogin());
+
+        IncomeRequest incomeRequest = new IncomeRequest();
+        incomeRequest.setUserId("UID1");
+        incomeRequest.setCategory(IncomeCategory.SALARY);
+        incomeRequest.setAmount(BigDecimal.valueOf(1000));
+        incomeRequest.setDescription("salary");
+
+        Date date = new Date();
+        date.setDay("10");
+        date.setMonth("05");
+        date.setYear("2021");
+        incomeRequest.setDate(date);
+
+        spendService.addIncome(incomeRequest);
+        spendService.addIncome(incomeRequest);
+        assertEquals(BigDecimal.valueOf(2000),spendService.totalIncome("UID1"));
+
+        ExpenseRequest expenseRequest = new ExpenseRequest();
+        expenseRequest.setUserId("UID1");
+        expenseRequest.setCategory(Category.CLOTHES);
+        expenseRequest.setAmount(BigDecimal.valueOf(500));
+        expenseRequest.setDescription("Clothes");
+        expenseRequest.setDate(date);
+        spendService.addExpense(expenseRequest);
+        spendService.addExpense(expenseRequest);
+        spendService.addExpense(expenseRequest);
+
+        spendService.removeExpense("EID2","UID1");
+        assertThrows(ExpenseNotFound.class,()-> spendService.findExpense("EID2","UID1"));
+
+
+
+    }
+
 
 
 }

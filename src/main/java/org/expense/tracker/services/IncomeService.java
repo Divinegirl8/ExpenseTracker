@@ -13,4 +13,6 @@ public interface IncomeService {
     void removeAllIncome(String userId);
 
     BigDecimal addIncomeAmount(String userId);
+
+    Income findIncome(String incomeId, String userId);
 }

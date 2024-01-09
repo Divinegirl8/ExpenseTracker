@@ -1,10 +1,7 @@
 package org.expense.tracker.services;
 
 import lombok.Data;
-import org.expense.tracker.data.models.Category;
-import org.expense.tracker.data.models.Date;
-import org.expense.tracker.data.models.Expense;
-import org.expense.tracker.data.models.Transaction;
+import org.expense.tracker.data.models.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,4 +15,5 @@ public interface ExpenseService {
     void removeAllExpense(String userId);
 
     BigDecimal addExpenseAmount(String userId);
+    Expense findExpense(String expenseId, String userId);
 }

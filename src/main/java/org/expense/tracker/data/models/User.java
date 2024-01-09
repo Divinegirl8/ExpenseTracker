@@ -12,6 +12,4 @@ public class User {
     private String username;
     private String password;
     private boolean login;
-    private String incomeId;
-    private String expenseId;
 }
