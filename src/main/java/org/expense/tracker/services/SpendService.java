@@ -19,11 +19,11 @@ public interface SpendService {
     BigDecimal totalIncome(String userId);
     BigDecimal totalExpense(String userId);
     BigDecimal balance(String userId);
-    void removeIncome(String incomeId,String userId);
+    void removeIncome(RemoveIncomeRequest removeIncomeRequest);
 
-    void removeExpense(String expenseId,String userId);
-    Income findIncome(String incomeId, String userId);
-    Expense findExpense(String expenseId, String userId);
+    void removeExpense(RemoveExpenseRequest removeExpenseRequest);
+    Income findIncome(FindIncomeRequest findIncomeRequest);
+    Expense findExpense(FindExpenseRequest findExpenseRequest);
     List<Expense> viewExpense(String userId);
     List<Income> viewIncome(String userId);
     void removeAllExpense(String userId);

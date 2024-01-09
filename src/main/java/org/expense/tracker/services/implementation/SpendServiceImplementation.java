@@ -107,23 +107,23 @@ public class SpendServiceImplementation implements SpendService {
     }
 
     @Override
-    public void removeIncome(String incomeId, String userId) {
-     incomeService.removeIncome(incomeId,userId);
+    public void removeIncome(RemoveIncomeRequest removeIncomeRequest) {
+     incomeService.removeIncome(removeIncomeRequest.getIncomeId(),removeIncomeRequest.getUserId());
     }
 
     @Override
-    public void removeExpense(String expenseId, String userId) {
-      expenseService.removeExpense(expenseId,userId);
+    public void removeExpense(RemoveExpenseRequest removeExpenseRequest) {
+      expenseService.removeExpense(removeExpenseRequest.getExpenseId(),removeExpenseRequest.getUserId());
     }
 
     @Override
-    public Income findIncome(String incomeId, String userId) {
-        return incomeService.findIncome(incomeId,userId);
+    public Income findIncome(FindIncomeRequest findIncomeRequest) {
+        return incomeService.findIncome(findIncomeRequest.getIncomeId(), findIncomeRequest.getUserId());
     }
 
     @Override
-    public Expense findExpense(String expenseId, String userId) {
-        return expenseService.findExpense(expenseId,userId);
+    public Expense findExpense(FindExpenseRequest findExpenseRequest) {
+        return expenseService.findExpense(findExpenseRequest.getExpenseId(), findExpenseRequest.getUserId());
     }
 
     @Override

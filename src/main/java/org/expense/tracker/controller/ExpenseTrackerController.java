@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 public class ExpenseTrackerController {
@@ -47,6 +48,59 @@ public class ExpenseTrackerController {
         }
     }
 
+    @DeleteMapping("/removeExpense")
+    public  ResponseEntity<?> removeExpense(@RequestBody RemoveExpenseRequest removeExpenseRequest){
+        RemoveExpenseResponse removeExpenseResponse = new RemoveExpenseResponse();
+        try {
+            spendService.removeExpense(removeExpenseRequest);
+            removeExpenseResponse.setMessage("Expense removed");
+            return new ResponseEntity<>(new ApiResponse(true, removeExpenseResponse), HttpStatus.CREATED);
+        } catch (Exception exception) {
+            removeExpenseResponse.setMessage(exception.getMessage());
+            return new ResponseEntity<>(new ApiResponse(false, removeExpenseResponse), HttpStatus.BAD_REQUEST);
+        }
+        }
+    @GetMapping("/findExpense")
+    public  ResponseEntity<?> findExpense(@RequestBody FindExpenseRequest findExpenseRequest){
+        FindExpenseResponse findExpenseResponse = new FindExpenseResponse();
+        try {
+           Expense expense = spendService.findExpense(findExpenseRequest);
+            findExpenseResponse.setMessage(expense+"");
+            return new ResponseEntity<>(new ApiResponse(true, findExpenseResponse), HttpStatus.CREATED);
+        } catch (Exception exception) {
+            findExpenseResponse.setMessage(exception.getMessage());
+            return new ResponseEntity<>(new ApiResponse(false, findExpenseResponse), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/viewExpense/{userId}")
+    public  ResponseEntity<?> viewExpense(@PathVariable("userId") String userId){
+        ViewExpenseResponse viewExpenseResponse = new ViewExpenseResponse();
+        try {
+            List<Expense> expense = spendService.viewExpense(userId);
+            viewExpenseResponse.setMessage(expense+"");
+            return new ResponseEntity<>(new ApiResponse(true, viewExpenseResponse), HttpStatus.CREATED);
+        } catch (Exception exception) {
+            viewExpenseResponse.setMessage(exception.getMessage());
+            return new ResponseEntity<>(new ApiResponse(false, viewExpenseResponse), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/removeAllExpense/{userId}")
+    public ResponseEntity<?> removeAllExpense(@PathVariable("userId") String userId){
+        RemoveExpenseResponse removeExpenseResponse = new RemoveExpenseResponse();
+        try {
+            spendService.removeAllExpense(userId);
+            removeExpenseResponse.setMessage("All expenses removed successfully");
+            return new ResponseEntity<>(new ApiResponse(true,removeExpenseResponse),HttpStatus.ACCEPTED);
+        }catch (Exception exception){
+            removeExpenseResponse.setMessage(exception.getMessage());
+            return new ResponseEntity<>(new ApiResponse(false,removeExpenseResponse),HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
-}
+    }
+
+
+

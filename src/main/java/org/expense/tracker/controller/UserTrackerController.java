@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -68,6 +69,20 @@ public class UserTrackerController {
         } catch (Exception exception) {
             transactionResponse.setMessage(exception.getMessage());
             return new ResponseEntity<>(new ApiResponse(false, transactionResponse), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/balance/{userId}")
+    public ResponseEntity<?> balance(@PathVariable("userId") String userId){
+        BalanceResponse balanceResponse = new BalanceResponse();
+
+        try {
+            BigDecimal balance = spendService.balance(userId);
+            balanceResponse.setMessage(balance+"");
+            return new ResponseEntity<>(new ApiResponse(true, balanceResponse), HttpStatus.CREATED);
+        } catch (Exception exception) {
+            balanceResponse.setMessage(exception.getMessage());
+            return new ResponseEntity<>(new ApiResponse(false, balanceResponse), HttpStatus.BAD_REQUEST);
         }
     }
 }

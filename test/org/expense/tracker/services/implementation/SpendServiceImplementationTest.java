@@ -478,8 +478,15 @@ class SpendServiceImplementationTest {
         spendService.addIncome(incomeRequest);
         assertEquals(BigDecimal.valueOf(2000),spendService.totalIncome("UID1"));
 
-        spendService.removeIncome("IID1","UID1");
-        assertThrows(IncomeNotFound.class,()-> spendService.findIncome("IID1","UID1"));
+        RemoveIncomeRequest removeIncomeRequest = new RemoveIncomeRequest();
+        removeIncomeRequest.setIncomeId("IID1");
+        removeIncomeRequest.setUserId("UID1");
+        spendService.removeIncome(removeIncomeRequest);
+
+        FindIncomeRequest findIncomeRequest = new FindIncomeRequest();
+        findIncomeRequest.setIncomeId("IID1");
+        findIncomeRequest.setUserId("UID1");
+        assertThrows(IncomeNotFound.class,()-> spendService.findIncome(findIncomeRequest));
 
 
 
@@ -523,8 +530,16 @@ class SpendServiceImplementationTest {
         spendService.addExpense(expenseRequest);
         spendService.addExpense(expenseRequest);
 
-        spendService.removeExpense("EID2","UID1");
-        assertThrows(ExpenseNotFound.class,()-> spendService.findExpense("EID2","UID1"));
+        RemoveExpenseRequest removeExpenseRequest = new RemoveExpenseRequest();
+        removeExpenseRequest.setExpenseId("EID2");
+        removeExpenseRequest.setUserId("UID1");
+
+        spendService.removeExpense(removeExpenseRequest);
+
+        FindExpenseRequest findExpenseRequest = new FindExpenseRequest();
+        findExpenseRequest.setExpenseId("EID2");
+        findExpenseRequest.setUserId("UID1");
+        assertThrows(ExpenseNotFound.class,()-> spendService.findExpense(findExpenseRequest));
 
 
 
