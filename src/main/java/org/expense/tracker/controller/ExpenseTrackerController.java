@@ -26,7 +26,7 @@ public class ExpenseTrackerController {
        AddExpenseResponse addExpenseResponse = new AddExpenseResponse();
         try {
             Expense expense = spendService.addExpense(expenseRequest);
-            addExpenseResponse.setMessage("Expense id is " + expense);
+            addExpenseResponse.setMessage("Expense id is " + expense.getExpenseId());
             return new ResponseEntity<>(new ApiResponse(true, addExpenseResponse), HttpStatus.CREATED);
         } catch (Exception exception) {
             addExpenseResponse.setMessage(exception.getMessage());

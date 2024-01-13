@@ -24,7 +24,7 @@ public class UserTrackerController {
         RegisterResponse registerResponse = new RegisterResponse();
         try {
             User user = spendService.register(registerRequest);
-            registerResponse.setMessage("Your Id is " + user);
+            registerResponse.setMessage("Your Id is " + user.getUserId());
             return new ResponseEntity<>(new ApiResponse(true, registerResponse), HttpStatus.CREATED);
         } catch (Exception exception) {
             registerResponse.setMessage(exception.getMessage());
@@ -64,7 +64,9 @@ public class UserTrackerController {
 
         try {
            List<Object> objectList = spendService.transaction(userId);
-            transactionResponse.setMessage(objectList+"");
+           String value =objectList+"";
+           String outputString = value.substring(1, value.length() - 1);
+            transactionResponse.setMessage(outputString);
             return new ResponseEntity<>(new ApiResponse(true, transactionResponse), HttpStatus.CREATED);
         } catch (Exception exception) {
             transactionResponse.setMessage(exception.getMessage());

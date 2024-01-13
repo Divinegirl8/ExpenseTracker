@@ -29,6 +29,7 @@ public class ExpenseServiceImplementation implements ExpenseService {
 
 
 
+
         expense.setUserId(userId);
         expense.setExpenseId("EID" + (expenseRepository.count() + 1));
         expense.setDate(date);

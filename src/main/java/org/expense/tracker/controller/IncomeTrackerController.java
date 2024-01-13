@@ -26,7 +26,7 @@ public class IncomeTrackerController {
         AddIncomeResponse addIncomeResponse = new AddIncomeResponse();
         try {
             Income income = spendService.addIncome(incomeRequest);
-            addIncomeResponse.setMessage("Income id is " + income);
+            addIncomeResponse.setMessage("Income id is " + income.getIncomeId());
             return new ResponseEntity<>(new ApiResponse(true, addIncomeResponse), HttpStatus.CREATED);
         } catch (Exception exception) {
             addIncomeResponse.setMessage(exception.getMessage());

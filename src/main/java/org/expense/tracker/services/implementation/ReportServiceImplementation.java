@@ -7,6 +7,7 @@ import org.expense.tracker.data.repository.ExpenseRepository;
 import org.expense.tracker.data.repository.IncomeRepository;
 import org.expense.tracker.data.repository.TransactionRepository;
 import org.expense.tracker.data.repository.UserRepository;
+import org.expense.tracker.exceptions.LoginIssue;
 import org.expense.tracker.exceptions.UserNotFoundException;
 import org.expense.tracker.services.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class ReportServiceImplementation implements ReportService {
     @Override
     public List<Object> transactionList(String userId) {
         User user = userRepository.findByUserId(userId);
+
+
 
         if (user == null) throw new UserNotFoundException(userId + " not found");
 
